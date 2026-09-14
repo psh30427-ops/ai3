@@ -3,6 +3,8 @@
 
 **작성자**: 박상혁 · **도구**: Make.com · **알림 채널**: Discord
 
+> ※ 본 보고서에 포함된 모든 스크린샷은 API 키, 토큰, 비밀번호, Discord 웹훅 URL 등 민감정보를 포함하지 않으며, 노출 가능성이 있는 정보는 캡처에서 제외하였다.
+
 ---
 
 ## 1. 자동화할 반복 업무 정의
@@ -59,31 +61,31 @@ Trigger(스케줄) → Action(오늘 KBO 일정 조회) → Action(경기 배열
 
 ### 4-1. 전체 시나리오 구조
 
-![전체 워크플로우](images/01_전체_워크플로우.png)
+![전체 워크플로우](images/01_workflow_overview.png)
 
 *그림 1. HTTP → Iterator → Filter → Router → Discord(2개 경로)로 구성된 전체 시나리오*
 
 ### 4-2. API 응답 데이터 확인
 
-![API 응답 데이터](images/02_API_응답_데이터.png)
+![API 응답 데이터](images/02_api_response.png)
 
 *그림 2. 네이버 스포츠 내부 API 응답 – gameId, 팀 코드, statusCode, 스코어 등 필드 확인*
 
 ### 4-3. HTTP 요청 모듈 설정
 
-![HTTP 모듈 설정](images/03_HTTP_모듈_설정.png)
+![HTTP 모듈 설정](images/03_http_module_setup.png)
 
 *그림 3. 일정 조회용 HTTP 모듈 – URL, Method(GET) 설정 화면*
 
 ### 4-4. 조건 분기(Router) 필터 설정
 
-![라우터 필터 설정](images/04_라우터_필터_설정.png)
+![라우터 필터 설정](images/04_router_filter_setup.png)
 
 *그림 4. 경기 종료 판별 필터 – statusCode = RESULT 조건*
 
 ### 4-5. Discord 전송 모듈 설정
 
-![Discord 전송 설정](images/05_Discord_전송_설정.png)
+![Discord 전송 설정](images/05_discord_module_setup.png)
 
 *그림 5. Discord 채널 연결 및 메시지 전송 모듈 설정 화면*
 
@@ -104,6 +106,14 @@ Trigger(스케줄) → Action(오늘 KBO 일정 조회) → Action(경기 배열
 ### 5-3. 자동 실행 스케줄 활성화
 
 시나리오는 'Daily at 오후 11:00'으로 스케줄이 설정되어 있으며, Save and Activate를 통해 매일 23:00에 자동 실행되도록 활성화하였다.
+
+### 5-4. 연속 자동 실행 증빙 (다수 실행일 로그)
+
+2026년 9월 11일부터 9월 13일까지 3일 연속으로 매일 오후 11:00에 시나리오가 수동 개입 없이 자동 실행되었으며, 그날그날 실제로 열린 KT 위즈 경기 상대(롯데 → KIA → 롯데)에 맞춰 서로 다른 결과 메시지가 정상적으로 생성됨을 확인하였다. 이는 Trigger(스케줄)가 매일 안정적으로 동작하고 있음을 보여주는 지속 실행 증빙이다.
+
+![연속 자동실행 로그](images/06_continuous_execution_log.png)
+
+*그림 6. 9/11~9/13 사흘간 매일 23:00 자동 실행된 Discord 알림 로그*
 
 ## 6. 과제 목표 대응 – 핵심 개념 정리
 
